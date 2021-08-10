@@ -15,34 +15,205 @@
           <td>
             <span>
               <span class="span_class">
-                <input type="checkbox" value="bat" id="bat" class="fix_ban" />
+                {% if is_include.bat %}
+                <input
+                  type="checkbox"
+                  value="bat"
+                  id="bat"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="bat"
+                  id="bat"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
                 <label for="bat">bat</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="cmd" id="cmd" class="fix_ban" />
+                {% if is_include.cmd %}
+                <input
+                  type="checkbox"
+                  value="cmd"
+                  id="cmd"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="cmd"
+                  id="cmd"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
                 <label for="cmd">cmd</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="com" id="com" class="fix_ban" />
+                {% if is_include.com %}
+                <input
+                  type="checkbox"
+                  value="com"
+                  id="com"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="com"
+                  id="com"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
                 <label for="com">com</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="cpl" id="cpl" class="fix_ban" />
+                {% if is_include.cpl %}
+                <input
+                  type="checkbox"
+                  value="cpl"
+                  id="cpl"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="cpl"
+                  id="cpl"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
                 <label for="cpl">cpl</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="exe" id="exe" class="fix_ban" />
+                {% if is_include.exe %}
+                <input
+                  type="checkbox"
+                  value="exe"
+                  id="exe"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="exe"
+                  id="exe"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
                 <label for="exe">exe</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="scr" id="scr" class="fix_ban" />
-                <label for="csr">csr</label>
+                {% if is_include.scr %}
+                <input
+                  type="checkbox"
+                  value="scr"
+                  id="scr"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  value="scr"
+                  id="scr"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
+                <label for="scr">scr</label>
               </span>
               <span class="span_class">
-                <input type="checkbox" value="js" id="js" class="fix_ban" />
+                {% if is_include.js %}
+                <input
+                  type="checkbox"
+                  value="js"
+                  id="js"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                  checked
+                />
+                {% set index = index +1 %} {% else %}
+                <input
+                  type="checkbox"
+                  value="js"
+                  id="js"
+                  class="fix_ban"
+                  onClick="FixCheck(this)"
+                />
+                {% endif %}
+
                 <label for="js">js</label>
               </span>
             </span>
+          </td>
+        </tr>
+        <!-- 체크했을 때 이벤트 처리 -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+          function FixCheck(ban) {
+            let url = "";
+            if (ban.checked) {
+              url = "/ban/add/" + ban.value;
+            } else {
+              url = "/ban/delete/" + ban.value;
+            }
+            const value = { value: ban.value };
+            console.log(url);
+            axios
+              .get(url, value)
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          }
+        </script>
+        <tr>
+          <th>커스텀 확장자</th>
+          <td>
+            <input type="text" name="ban_extention" id="ban_extention" />
+            <button type="button" id="ban_add">추가</button>
+          </td>
+        </tr>
+        <script>
+          document
+            .getElementById("ban_add")
+            .addEventListener("click", function () {
+              let ban_extention =
+                document.getElementById("ban_extention").value;
+              if (ban_extention.length >= 20) {
+                alert("20자 이상 입력할 수 없습니다.");
+              } else {
+                let url = "/ban/var/add/" + ban_extention;
+              }
+            });
+        </script>
+        <tr>
+          <th></th>
+          <td>
+            <div
+              id="ban_list"
+              style="height: 300px; border: 1px solid #000; overflow: scroll"
+            ></div>
           </td>
         </tr>
       </table>
