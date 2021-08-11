@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const nunjucks = require('nunjucks');
 const { sequelize } = require('./models');
 const morgan = require('morgan');
@@ -12,6 +11,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public/img'))
 
 app.set('port', process.env.PORT || 8000);
 app.set('view engine', 'html');
