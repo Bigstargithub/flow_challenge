@@ -12,7 +12,7 @@ database: mysql
 1. git을 clone한다. (명령 프롬프트 or 터미널 -> 원하는 폴더로 이동 -> git clone https://github.com/Bigstargithub/flow_challenge.git 입력)
 2. npm i 입력
 3. config/config.json에서 development의 password를 바꿔야한다. (local mysql 비밀번호로 변경)
-4. npx sequelize db:create입력
+4. npx sequelize-cli db:create입력
 5. npm start 입력한 후 브라우저에서 localhost:8000 입력
 
 ## Table 구조
