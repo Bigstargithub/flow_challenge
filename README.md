@@ -2,8 +2,10 @@
 고정 확장자와 커스텀 확장자를 추가하는 기능을 구현했습니다.
 
 ## 개발 언어
-back : node.js
-front : html, css, javascript
+back : node.js 
+
+front : html, css, javascript 
+
 database: mysql
 
 ## 파일 실행하는 법
