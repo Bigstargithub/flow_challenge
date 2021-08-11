@@ -200,11 +200,28 @@
             .addEventListener("click", function () {
               let ban_extention =
                 document.getElementById("ban_extention").value;
+              let url = "";
               if (ban_extention.length >= 20) {
                 alert("20자 이상 입력할 수 없습니다.");
               } else {
-                let url = "/ban/var/add/" + ban_extention;
+                url = "/ban/var/add/" + ban_extention;
+                console.log(url);
               }
+
+              axios
+                .get(url)
+                .then((response) => {
+                  if (response.data == "err_count") {
+                    alert("200개 이하의 확장자만 추가가 가능합니다.");
+                  } else if (response.data == "double_add") {
+                    alert("중복된 확장자입니다.");
+                  } else {
+                    location.reload();
+                  }
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
             });
         </script>
         <tr>
@@ -213,7 +230,44 @@
             <div
               id="ban_list"
               style="height: 300px; border: 1px solid #000; overflow: scroll"
-            ></div>
+            >
+              {% for Var in var_Ban %}
+              <div
+                style="
+                  width: 60px;
+                  padding: 5px;
+                  border: 1px solid #000;
+                  margin: 5px;
+                  border-radius: 4px;
+                  display: inline-block;
+                "
+              >
+                {{Var.ban_extention}}
+                <img
+                  src="x_icon.png"
+                  style="float: right; width: 25px"
+                  class="ban_delete"
+                  data-id="{{Var.ban_extention}}"
+                />
+              </div>
+              {% endfor %}
+            </div>
+            <script>
+              var ban_del = document.getElementsByClassName("ban_delete");
+              for (var_ban of ban_del) {
+                var_ban.addEventListener("click", function (event) {
+                  let url = "ban/var/del/" + event.target.dataset.id;
+                  axios
+                    .get(url)
+                    .then(() => {
+                      location.reload();
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                    });
+                });
+              }
+            </script>
           </td>
         </tr>
       </table>
