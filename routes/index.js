@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ban_list, fix_ban_list } = require('../models');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 const fix_ban = ['bat', 'cmd','com','cpl', 'exe', 'scr', 'js'];
 
@@ -30,6 +30,7 @@ router.get('/', async (req, res) => {
         var_Ban,
         is_include,
     });
+    
 })
 
 router.get('/ban/add/:exec', async(req, res, next) => {
@@ -58,6 +59,46 @@ router.get('/ban/delete/:exec', async(req, res, next) => {
     })
 })
 
+router.get('/ban/var/add/:exec',async (req, res, next) => {
+    const exec = req.params.exec;
+    const count_ban = await ban_list.count({});
+    const is_double = await ban_list.count({
+        where: {
+            ban_extention: exec
+        }
+    })
+    if(count_ban > 200)
+    {
+        res.send('err_count');
+    }
+    else if(is_double > 0)
+    {
+        res.send('double_add');
+    }
+    else
+    {
+        ban_list.create({
+            ban_extention: exec
+        })
+        .then(
+            res.send('success')
+        );
+    }
+})
 
+router.get('/ban/var/del/:exec', async (req, res,next) => {
+    const exec = req.params.exec;
+    ban_list.destroy({
+        where: {
+            ban_extention: exec
+        }
+    })
+    .then(() => {
+        res.send(exec)
+    })
+    .catch((err) => {
+        console.error(err);
+    })
+})
 
 module.exports = router;
